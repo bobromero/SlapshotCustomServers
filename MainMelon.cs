@@ -1,76 +1,52 @@
 ﻿using MelonLoader;
 using LiteNetLib;
 using LiteNetLib.Utils;
+using System.Reflection;
 using System.Net;
 using System.Net.Sockets;
-using System.Reflection;
-using Il2Cpp;
-using UnityEngine;
 
-
-namespace SlapshotCustomServers
+namespace SlapshotCustomClients
 {
     public class MainMelon : MelonMod
     {
-        private CustomServer serverInstance;
-
+        private CustomClient clientInstance;
 
         public override void OnInitializeMelon()
         {
-            Melon<MainMelon>.Logger.Msg("Initialized");
-
-            serverInstance = new CustomServer();
-            serverInstance.Start();
-            Melon<MainMelon>.Logger.Msg("Custom Server started, making slap server");
-
-            //make slap server
-            serverInstance.SlapServer = new GameObject().AddComponent<Server>();
-            
-            
-        }
-        public override void OnUpdate()
-        {
-            if (serverInstance != null)
+            if (clientInstance != null)
             {
-                serverInstance.Tick();
+                clientInstance.Tick();
             }
-            
         }
     }
-    public class CustomServer : INetEventListener
-    {
-        private NetManager server;
-        public Server SlapServer;
 
-        public void Start()
+    public class CustomClient : INetEventListener
+    {
+        private NetManager client;
+        private NetPeer server;
+
+        public void Connect()
         {
-            server = new NetManager(this)
+            client = new NetManager(this)
             {
                 AutoRecycle = true
             };
-            server.Start(9050);
+            client.Start();
+            client.Connect("localhost", 9050, "Slapshot");
         }
 
         public void Tick()
         {
-            if (server != null)
+            if (client != null)
             {
-                server.PollEvents();
+                client.PollEvents();
             }
         }
 
-
         public void OnConnectionRequest(ConnectionRequest request)
         {
-            Melon<MainMelon>.Logger.Msg("Connection request");
-            if (server.ConnectedPeersCount < 10)
-            {
-                request.AcceptIfKey("Slapshot");
-            }
-            else
-            {
-                request.Reject();
-            }
+            Melon<MainMelon>.Logger.Msg("In" + MethodBase.GetCurrentMethod().Name);
+            throw new NotImplementedException();
         }
 
         public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
@@ -81,7 +57,7 @@ namespace SlapshotCustomServers
 
         public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
         {
-            Melon<MainMelon>.Logger.Msg(peer.Id + "'s ping: " + latency);
+            Melon<MainMelon>.Logger.Msg("latency to server: " + latency);
         }
 
         public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, byte channelNumber, DeliveryMethod deliveryMethod)
@@ -98,7 +74,8 @@ namespace SlapshotCustomServers
 
         public void OnPeerConnected(NetPeer peer)
         {
-            Melon<MainMelon>.Logger.Msg(peer.Address + " connected!");
+            Melon<MainMelon>.Logger.Msg("Connected to server");
+            server = peer;
         }
 
         public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
@@ -107,5 +84,4 @@ namespace SlapshotCustomServers
             throw new NotImplementedException();
         }
     }
-    
 }
