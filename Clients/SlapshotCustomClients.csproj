@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(TargetDir)SlapshotCustomServers.dll&quot; &quot;F:\Steam\steamapps\common\SlapshotRebound\Mods&quot; /Y" />
+    <Exec Command="xcopy &quot;$(TargetDir)SlapshotCustomClients.dll&quot; &quot;F:\Steam\steamapps\common\SlapshotRebound\Mods&quot; /Y" />
   </Target>
 
   <ItemGroup>
