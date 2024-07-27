@@ -10,8 +10,14 @@
     <Reference Include="0Harmony">
       <HintPath>F:\Steam\steamapps\common\Slapshotserver\MelonLoader\net6\0Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>F:\Steam\steamapps\common\Slapshotserver\MelonLoader\Il2CppAssemblies\Assembly-CSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Il2CppInterop.Runtime">
       <HintPath>F:\Steam\steamapps\common\Slapshotserver\MelonLoader\net6\Il2CppInterop.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2Cppmscorlib">
+      <HintPath>F:\Steam\steamapps\common\Slapshotserver\MelonLoader\Il2CppAssemblies\Il2Cppmscorlib.dll</HintPath>
     </Reference>
     <Reference Include="LiteNetLib">
       <HintPath>F:\Steam\steamapps\common\Slapshotserver\MelonLoader\Il2CppAssemblies\LiteNetLib.dll</HintPath>
@@ -19,6 +25,25 @@
     <Reference Include="MelonLoader">
       <HintPath>F:\Steam\steamapps\common\Slapshotserver\MelonLoader\net6\MelonLoader.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>F:\Steam\steamapps\common\Slapshotserver\MelonLoader\Il2CppAssemblies\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>F:\Steam\steamapps\common\Slapshotserver\MelonLoader\Il2CppAssemblies\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>F:\Steam\steamapps\common\Slapshotserver\MelonLoader\Il2CppAssemblies\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule">
+      <HintPath>F:\Steam\steamapps\common\Slapshotserver\MelonLoader\Il2CppAssemblies\UnityEngine.InputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>F:\Steam\steamapps\common\Slapshotserver\MelonLoader\Il2CppAssemblies\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(TargetDir)SlapshotCustomServers.dll&quot; &quot;F:\Steam\steamapps\common\Slapshotserver\Mods&quot; /Y&#xD;&#xA;" />
+  </Target>
 
 </Project>

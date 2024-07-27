@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlapshotCustomServers", "SlapshotCustomServers.csproj", "{F1C2C964-5B59-40B0-93CC-98931377AAE8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlapshotCustomClients", "..\SlapshotCustomClients\SlapshotCustomClients.csproj", "{1AF76CF3-E07E-4483-8486-52A644F0FCAE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F1C2C964-5B59-40B0-93CC-98931377AAE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1C2C964-5B59-40B0-93CC-98931377AAE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1C2C964-5B59-40B0-93CC-98931377AAE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AF76CF3-E07E-4483-8486-52A644F0FCAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AF76CF3-E07E-4483-8486-52A644F0FCAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AF76CF3-E07E-4483-8486-52A644F0FCAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AF76CF3-E07E-4483-8486-52A644F0FCAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
