@@ -78,7 +78,7 @@ namespace SlapshotCustomClients
 
         public void JoinGame()
         {
-            SendPacket(new CustomJoinRequestPacket
+            SendPacket(new JoinRequestPacket
             {
                 JerseyNumber = "69",
                 Username = "Rob",

@@ -94,7 +94,7 @@ namespace SlapshotCustomServers
             switch (packet.PacketType)
             {
                 case PacketType.JoinRequest:
-                    var newpacket = (CustomJoinRequestPacket)packet;
+                    var newpacket = (JoinRequestPacket)packet;
                     slapPacketHandler.OnPacketReceived(connections.FirstOrDefault().Value, (JoinRequestPacket)packet);
                     break;
                 case PacketType.PlayerLeaveEvent:
@@ -187,7 +187,7 @@ namespace SlapshotCustomServers
         {
             Melon<ServerMelon>.Logger.Msg(peer.Id + " Connected to server!");
             Peers.Add(peer.Id, peer);
-            connections.Add(peer.Id, new ServerConnection(SlapshotServer, peer));
+            connections.Add(peer.Id, new ServerConnection(SlapshotServer, (Il2CppLiteNetLib.NetPeer)(Il2CppSystem.Object)(System.Object)peer));
         }
 
         public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
