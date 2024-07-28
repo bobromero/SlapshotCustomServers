@@ -4,6 +4,8 @@ using LiteNetLib.Utils;
 using System.Reflection;
 using System.Net;
 using System.Net.Sockets;
+using Il2Cpp;
+using UnityEngine;
 
 namespace SlapshotCustomClients
 {
@@ -19,9 +21,14 @@ namespace SlapshotCustomClients
         }
         public override void OnUpdate()
         {
-            if (clientInstance != null)
+            if (clientInstance == null)
             {
-                clientInstance.Tick();
+                return;
+            }
+            clientInstance.Tick();
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                clientInstance.JoinGame();
             }
         }
     }
@@ -31,6 +38,11 @@ namespace SlapshotCustomClients
         private NetManager client;
         private NetPeer server;
 
+        private NetDataWriter writer;
+        private NetPacketProcessor packetProcessor;
+
+        private ClientPacketHandler slapPacketHandler;
+
         public void Connect()
         {
             client = new NetManager(this)
@@ -39,6 +51,10 @@ namespace SlapshotCustomClients
             };
             client.Start();
             client.Connect("localhost", 9050, "Slapshot");
+            writer = new NetDataWriter();
+            slapPacketHandler = new ClientPacketHandler(Client.Instance);
+            packetProcessor = new NetPacketProcessor();
+            packetProcessor.SubscribeReusable<BasePacket>(OnReceivePacket);
         }
 
         public void Tick()
@@ -49,6 +65,86 @@ namespace SlapshotCustomClients
             }
         }
 
+        public void SendPacket<T>(T packet, DeliveryMethod deliveryMethod) where T : class, new()
+        {
+            if (server != null)
+            {
+                writer.Reset();
+                packetProcessor.Write(writer, packet);
+                server.Send(writer, deliveryMethod);
+            }
+        }
+
+        public void JoinGame()
+        {
+            SendPacket(new JoinRequestPacket
+            {
+                JerseyNumber = "69",
+                Username = "Rob",
+                UUID = "80822",
+                RightHandedness = true
+            }, DeliveryMethod.ReliableOrdered);
+        }
+
+        public void OnReceivePacket(BasePacket packet)
+        {
+            Melon<ClientMelon>.Logger.Msg("packet Received");
+            //Type type;
+            switch (packet.PacketType)
+            {
+                case PacketType.JoinRequest:
+                    //packet = (JoinRequestPacket)packet;
+                    break;
+                case PacketType.PlayerLeaveEvent:
+                    break;
+                case PacketType.PlayerJoinEvent:
+                    //packet = (PlayerJoinEventPacket)packet;
+                    break;
+                case PacketType.InitialMatchState:
+                    break;
+                case PacketType.WorldState:
+                    break;
+                case PacketType.MatchState:
+                    break;
+                case PacketType.PlayerStats:
+                    break;
+                case PacketType.ChatMessageEvent:
+                    break;
+                case PacketType.GoalScored:
+                    break;
+                case PacketType.SaveMade:
+                    break;
+                case PacketType.Pong:
+                    break;
+                case PacketType.StatsReport:
+                    break;
+                case PacketType.PodiumState:
+                    break;
+                case PacketType.PuckAddEvent:
+                    break;
+                case PacketType.PuckRemoveEvent:
+                    break;
+                case PacketType.SumoState:
+                    break;
+                case PacketType.PlayerInput:
+                    break;
+                case PacketType.SkipReplay:
+                    break;
+                case PacketType.Ping:
+                    break;
+                case PacketType.ForfeitVote:
+                    break;
+                case PacketType.StartForfeit:
+                    break;
+                default:
+                    break;
+            }
+            slapPacketHandler.OnPacketReceived((PlayerJoinEventPacket)packet);
+            Melon<ClientMelon>.Logger.Msg("packet Handeled");
+        }
+
+
+        #region INetEventListener
         public void OnConnectionRequest(ConnectionRequest request)
         {
             Melon<ClientMelon>.Logger.Msg("In" + MethodBase.GetCurrentMethod().Name);
@@ -68,8 +164,7 @@ namespace SlapshotCustomClients
 
         public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, byte channelNumber, DeliveryMethod deliveryMethod)
         {
-            Melon<ClientMelon>.Logger.Msg("In" + MethodBase.GetCurrentMethod().Name);
-            throw new NotImplementedException();
+            packetProcessor.ReadAllPackets(reader);
         }
 
         public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)
@@ -88,5 +183,6 @@ namespace SlapshotCustomClients
         {
             Melon<ClientMelon>.Logger.Msg("Server disconnected");
         }
+        #endregion
     }
 }

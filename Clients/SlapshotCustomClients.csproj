@@ -29,6 +29,18 @@
     <Reference Include="MelonLoader">
       <HintPath>F:\Steam\steamapps\common\SlapshotRebound\MelonLoader\net6\MelonLoader.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>F:\Steam\steamapps\common\SlapshotRebound\MelonLoader\Il2CppAssemblies\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>F:\Steam\steamapps\common\SlapshotRebound\MelonLoader\Il2CppAssemblies\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>F:\Steam\steamapps\common\SlapshotRebound\MelonLoader\Il2CppAssemblies\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule">
+      <HintPath>F:\Steam\steamapps\common\SlapshotRebound\MelonLoader\Il2CppAssemblies\UnityEngine.InputModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
