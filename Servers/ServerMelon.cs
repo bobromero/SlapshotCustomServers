@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using Il2Cpp;
 using UnityEngine;
+using Packets;
 
 namespace SlapshotCustomServers
 {
@@ -31,6 +32,8 @@ namespace SlapshotCustomServers
         }
     }
 
+    
+
     public class CustomServer : INetEventListener
     {
         private NetManager server;
@@ -42,7 +45,7 @@ namespace SlapshotCustomServers
         private ServerPacketHandler slapPacketHandler;
 
         private Dictionary<int, NetPeer> Peers = new Dictionary<int, NetPeer>();
-        private Dictionary<int, ServerConnection> connections = new Dictionary<int, ServerConnection>();
+        //private Dictionary<int, ServerConnection> connections = new Dictionary<int, ServerConnection>();
 
         public void Start()
         {
@@ -55,7 +58,8 @@ namespace SlapshotCustomServers
             writer = new NetDataWriter();
             slapPacketHandler = new ServerPacketHandler(SlapshotServer);
             packetProcessor = new NetPacketProcessor();
-            packetProcessor.SubscribeReusable<BasePacket>(OnReceivePacket);
+            //packetProcessor.RegisterNestedType<CustomJoinRequestPacket>();
+            packetProcessor.SubscribeReusable<JoinRequestPacket>(OnReceivePacket);
         }
 
         public void Tick()
@@ -90,8 +94,8 @@ namespace SlapshotCustomServers
             switch (packet.PacketType)
             {
                 case PacketType.JoinRequest:
-                    var newpacket = (JoinRequestPacket)packet;
-                    slapPacketHandler.OnPacketReceived(connections.FirstOrDefault().Value, (JoinRequestPacket)packet);
+                    var newpacket = (CustomJoinRequestPacket)packet;
+                    //slapPacketHandler.OnPacketReceived(new ServerConnection(SlapshotServer, ), (JoinRequestPacket)packet);
                     break;
                 case PacketType.PlayerLeaveEvent:
                     break;
@@ -169,7 +173,8 @@ namespace SlapshotCustomServers
 
         public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, byte channelNumber, DeliveryMethod deliveryMethod)
         {
-            packetProcessor.ReadAllPackets(reader);
+            Melon<ServerMelon>.Logger.Msg("In" + MethodBase.GetCurrentMethod().Name);
+            packetProcessor.ReadAllPackets(reader,peer);
         }
 
         public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)

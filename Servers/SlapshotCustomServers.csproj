@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Packets\Packets.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>F:\Steam\steamapps\common\Slapshotserver\MelonLoader\net6\0Harmony.dll</HintPath>
     </Reference>

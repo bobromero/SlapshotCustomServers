@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using Il2Cpp;
 using UnityEngine;
+using Packets;
 
 namespace SlapshotCustomClients
 {
@@ -77,7 +78,7 @@ namespace SlapshotCustomClients
 
         public void JoinGame()
         {
-            SendPacket(new JoinRequestPacket
+            SendPacket(new CustomJoinRequestPacket
             {
                 JerseyNumber = "69",
                 Username = "Rob",
@@ -185,4 +186,5 @@ namespace SlapshotCustomClients
         }
         #endregion
     }
+
 }
