@@ -45,7 +45,7 @@ namespace SlapshotCustomServers
         private ServerPacketHandler slapPacketHandler;
 
         private Dictionary<int, NetPeer> Peers = new Dictionary<int, NetPeer>();
-        //private Dictionary<int, ServerConnection> connections = new Dictionary<int, ServerConnection>();
+        private Dictionary<int, ServerConnection> connections = new Dictionary<int, ServerConnection>();
 
         public void Start()
         {
@@ -95,7 +95,7 @@ namespace SlapshotCustomServers
             {
                 case PacketType.JoinRequest:
                     var newpacket = (CustomJoinRequestPacket)packet;
-                    //slapPacketHandler.OnPacketReceived(new ServerConnection(SlapshotServer, ), (JoinRequestPacket)packet);
+                    slapPacketHandler.OnPacketReceived(connections.FirstOrDefault().Value, (JoinRequestPacket)packet);
                     break;
                 case PacketType.PlayerLeaveEvent:
                     break;
@@ -187,6 +187,7 @@ namespace SlapshotCustomServers
         {
             Melon<ServerMelon>.Logger.Msg(peer.Id + " Connected to server!");
             Peers.Add(peer.Id, peer);
+            connections.Add(peer.Id, new ServerConnection(SlapshotServer, peer));
         }
 
         public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
